@@ -22,7 +22,6 @@ const userSchema = sequelize.define("user", {
         is : /^[a-zA-Z _.]+[^\W\s_0-9]$/
         }
     },  
-
     email: {
       type: DataTypes.STRING,
       allowNull : false,
@@ -57,8 +56,7 @@ const userSchema = sequelize.define("user", {
         allowNull : false,
         min : 8,
     },
-      
-     role: {
+    role: {
        type: DataTypes.STRING,
        allowNull:false
     },
@@ -66,10 +64,11 @@ const userSchema = sequelize.define("user", {
       type:DataTypes.STRING,
       allowNull :false
     },
+    
 
     })
 
-     sequelize.sync({force:true}).then(() => {
+     sequelize.sync().then(() => {
         console.log('user table created successfully!');
      }).catch((error) => {
         console.error('Unable to create table ', error);
