@@ -26,7 +26,7 @@ transporter.sendMail(options,(err,info)=>{
     }
     console.log(info.response);
   })
-    }
+    },
 
 
     // deletionMailer: (mail) => {

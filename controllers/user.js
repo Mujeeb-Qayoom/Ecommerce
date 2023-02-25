@@ -1,15 +1,17 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/user');
-const Otp = require('../models/otp');
+const userModel = require('../models/user');
+const otpMOdel = require('../models/otp');
 const mailer = require('../helpers/mailer')
 const randomNumber = require('../helpers/randamNo');
+const userSchema = require('../schema/userSchema')
+const otpSchema =require('../schema/otpSchema')
 
 
 module.exports ={
 
     signup :  async(req,res) => {
 
-        const checkemail = await User.findOne({where :{email:req.body.email}})
+        const checkemail = await userSchema.findOne({where :{email:req.body.email}})
         console.log(checkemail);
         if(checkemail){
             return res.status(409).json({error: "email already exists"})
@@ -34,11 +36,19 @@ module.exports ={
          }; 
     
             try{
-             const data = await User.create(user);
+             const data = await userModel.signup(user);
+
+             if(data){
+
             res.status(201).json({ 
               "message":"User Created Successfully!!!",
               info :data
             });
+          }
+
+          else{
+            res.status(500).json( {error :"check your details"});
+          }
           }
           catch(err){
             res.status(400).json( {error :"check your details"});
@@ -47,23 +57,39 @@ module.exports ={
 
     emailverification : async(req,res)=>{
 
-        const verify = await User.findOne({where: {email: req.body.email}})
+        const verify = await userSchema.findOne({where: {email: req.body.email}})
         
         if(!verify){
             return res.status(400).json({error : "email does not match"});
-        }
-          try{
+         }
+         // try{
             const otp = randomNumber.numberGenerator();
             await mailer.emailer(verify.email,otp);
-            return res.status(200).json({message : "verification process initiated check out your email"})
-          }
-          catch(err){
-            return res.status(500).json({error : err})
-          }
+
+            const validityPeriod = 5 * 60 * 1000;
+            const expiresAt = new Date(Date.now() + validityPeriod);
+            const data = await otpMOdel.emailverification(otp,verify.userId,verify.createdAt,expiresAt);
+            return res.status(200).json({message : "verification process initiated check out your email", data})
+          // }
+          // catch(err){
+          //   return res.status(500).json({error : err})
+          // }
    },
    
-   
-     accountverification : async(req,res)=>{
+   accountverification : async(req,res)=>{
 
+    const data = await userSchema.findOne({where:{email : req.body.email}})
+    if (!data){
+      return res.status(404).json({error : "email not matched"})
+    }
+   const verify = await otpMOdel.accountVerification(data.userId,req.body.otp);
+    if(verify){
+       res.status(201).json({message:"account verified"})
+    }
+     else{
+      res.status(500).json({error : "verification failed"})
      }
+   }
+   
+  
 }

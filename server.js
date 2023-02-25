@@ -9,10 +9,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended : true}))
 app.use(UserRouter);
 
-
-
-
-
 app.listen(port,()=>{
     console.log("listening to the port ",port)
 });
