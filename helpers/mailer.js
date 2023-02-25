@@ -27,6 +27,33 @@ transporter.sendMail(options,(err,info)=>{
     console.log(info.response);
   })
     },
+    verifyMail : async (Newmail) => {
+        const transporter = nodemailer.createTransport({
+        
+                service: "hotmail",
+                auth:{
+                    user : "mujeebqayoom@outlook.com",
+                    pass : "@M01942406085"    
+                },
+               tls: {
+                       rejectUnauthorized :false
+                    }
+            });
+            const options = {
+            from : "mujeebqayoom@outlook.com",
+            to : Newmail,
+            subject: "Ecommerce",
+            text : `Congrats, Your account has been sucessfully verified `
+            }
+        
+        transporter.sendMail(options,(err,info)=>{
+        
+            if(err){
+                return console.log(err);
+            }
+            console.log(info.response);
+          })
+            },
 
 
     // deletionMailer: (mail) => {

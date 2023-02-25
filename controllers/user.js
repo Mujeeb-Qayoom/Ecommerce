@@ -84,7 +84,12 @@ module.exports ={
     }
    const verify = await otpMOdel.accountVerification(data.userId,req.body.otp);
     if(verify){
-       res.status(201).json({message:"account verified"})
+       
+     await userSchema.update({ status: 'verified' }, { where: { userId: data.userId } })
+
+        await userSchema.afterSave();
+        await mailer.verifyMail(data.email);
+        res.status(201).json({message:"account verified"})
     }
      else{
       res.status(500).json({error : "verification failed"})
