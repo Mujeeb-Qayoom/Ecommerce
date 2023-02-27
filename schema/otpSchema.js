@@ -25,7 +25,7 @@ const otpSchema = sequelize.define("otp", {
    
    
 });
-otpSchema.belongsTo(users);
+otpSchema.belongsTo(users,{foreignKey : 'userId'});
 
 
 sequelize.sync().then(() => {

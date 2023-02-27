@@ -5,7 +5,7 @@ module.exports = {
    emailverification : async(otp,userId,otpCreatedDate,expiresAt)=>{
       const data ={
          otpValue : otp,
-         userUserId : userId ,
+         userId : userId ,
          otpCreatedDate: otpCreatedDate,
          otpExpiryDate : expiresAt
         }
@@ -17,7 +17,9 @@ module.exports = {
    
    accountVerification : async(id,otp)=>{
       try {
-      const data = await otpSchema.findOne({where :{ userUserId : id}})
+      const data = await otpSchema.findOne({where :{ userId : id}})
+      console.log(data);
+      console.log(otp + " and " + data.otpValue)
 
       if(otp != data.otpValue && (data.otpExpiryDate < new Date()))
       { 
