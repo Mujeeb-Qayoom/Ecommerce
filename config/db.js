@@ -13,10 +13,9 @@ const sequelize = new Sequelize(
         acquire : 60000,
         idle:10000,
        }
-     
-     
     }
    );
+   
     try{
             sequelize.authenticate();
             console.log('Connection has been established successfully.');

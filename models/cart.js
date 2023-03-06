@@ -15,7 +15,7 @@ module.exports = {
     },
 
     findUser : async (id) =>{
-         const result = await cartSchema.findOne({where :{userId : id}})
+         const result = await cartSchema.findOne({where :{userId : id}});
          if(result){
             return true;
          }

@@ -1,13 +1,15 @@
 const bcrypt = require('bcrypt');
 const userModel = require('../models/user');
 const otpMOdel = require('../models/otp');
-const productModel = require('../models/product')
-const cartModel = require('../models/cart')
-const mailer = require('../helpers/mailer')
+const productModel = require('../models/product');
+const cartModel = require('../models/cart');
+const mailer = require('../helpers/mailer');
 const randomNumber = require('../helpers/randamNo');
-const userSchema = require('../schema/userSchema')
-const otpSchema = require('../schema/otpSchema')
-const response = require('../helpers/responseHandler')
+const userSchema = require('../schema/userSchema');
+const otpSchema = require('../schema/otpSchema');
+const response = require('../helpers/responseHandler');
+const auth = require('../middleware/userAuth');
+
 
 
 module.exports = {
@@ -96,7 +98,25 @@ module.exports = {
      }
   },
 
-  addProduct: async (req, res) => {
+  login : async (req,res) =>{
+
+      // try{
+         const user = await userModel.userLogin(req);
+         if(user){
+         const token = await auth.generateToken(user.userId);
+
+          return response.successResponse(req,res,200,token)
+
+         }
+         return response.errorResponse(req,res,400,"invalid credentials");
+        // }
+        
+        // catch(err){
+        //   return response.serverResponse(res,500,"server error");
+        // }
+  },
+
+addProduct:  async (req, res) => {
     const data = {
       userId: req.body.userId,
       productName: req.body.productName,

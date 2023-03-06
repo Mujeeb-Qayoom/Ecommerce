@@ -20,10 +20,10 @@ module.exports = {
     }})
 
     if(product){
-        return true 
+        return true;
     }
     else{
-        return false
+        return false;
     } 
    },
     
@@ -31,12 +31,12 @@ module.exports = {
     const products = await productSchema.findAll();
     if(products){
         return true
-     }
-     else{
+      }
+        else{
         return false;
     }
    },
-   
+
    updateProducts : async (id,price) => {
     const data = {productPrice : price}
     const product = await productSchema.update(data, {where :{ productId : id}})

@@ -30,7 +30,7 @@ const productSchema = sequelize.define("product", {
         type : DataTypes.BOOLEAN,
         defaultValue :true,},
 
-})  
+});
 
 productSchema.belongsTo(users,{foreignKey : 'userId'});
 

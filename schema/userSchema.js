@@ -21,7 +21,7 @@ const userSchema = sequelize.define("user", {
       validate :{
         is : /^[a-zA-Z _.]+[^\W\s_0-9]$/
         }
-    },  
+     },  
     email: {
       type: DataTypes.STRING,
       allowNull : false,
@@ -29,20 +29,17 @@ const userSchema = sequelize.define("user", {
       validate : {
         isEmail : true
       }
-    },
+     },
     phone: {
        type:DataTypes.STRING,
        unique :true,
        allowNull :false,
        max : 15,
-
     },
-
     country :{
         type : DataTypes.STRING,
         allowNull :false,
     },
-
     state :{
         type: DataTypes.STRING,
         allowNull :false
