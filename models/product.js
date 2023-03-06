@@ -1,5 +1,6 @@
 const productSchema= require('../schema/productSehema');
 
+
 module.exports = {
 
     add : async(data) =>{
@@ -12,12 +13,13 @@ module.exports = {
       else{ 
         return false
     }
-   },
+  },
 
    delete : async(id)=>{
     const product =await productSchema.destroy({where :{
         productId : id
     }})
+    console.log(product);
 
     if(product){
         return true;
@@ -25,6 +27,7 @@ module.exports = {
     else{
         return false;
     } 
+<<<<<<< HEAD
    },
     
    showProducts : async () =>{
@@ -48,3 +51,7 @@ module.exports = {
     }
    },
  }
+=======
+   }
+}
+>>>>>>> parent of 300f926 (added cart schema)

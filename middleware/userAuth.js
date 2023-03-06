@@ -24,9 +24,6 @@ const userSchema = require('../schema/userSchema');
            return res.status(401).json({message: "please authenticate"})
           
         } 
-       req.token = token;
-    
-       req.user =user;
      }    
         catch(error){  
          return  res.status(401).json({message: "please authenticate"})

@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
             user : "mujeebqayoom@outlook.com",
             pass : "@M01942406085"    
         },
-        tls: {
+       tls: {
                rejectUnauthorized :false
             }
     });
@@ -30,7 +30,7 @@ transporter.sendMail(options,(err,info)=>{
     verifyMail : async (Newmail) => {
         const transporter = nodemailer.createTransport({
         
-            service: "hotmail",
+                service: "hotmail",
                 auth:{
                     user : "mujeebqayoom@outlook.com",
                     pass : "@M01942406085"    

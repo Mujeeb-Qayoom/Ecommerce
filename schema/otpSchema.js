@@ -5,7 +5,7 @@ const users = require('../schema/userSchema');
 
 const otpSchema = sequelize.define("otp", {
 
-   otpId: {
+    otpId: {
         type: DataTypes.UUID,
         defaultValue : UUIDV4,
         primaryKey: true,
@@ -22,6 +22,7 @@ const otpSchema = sequelize.define("otp", {
    otpExpiryDate :{
     type : DataTypes.DATE
    }
+   
    
 });
 otpSchema.belongsTo(users,{foreignKey : 'userId'});

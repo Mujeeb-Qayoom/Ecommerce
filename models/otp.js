@@ -7,27 +7,30 @@ module.exports = {
          otpValue : otp,
          userId : userId ,
          otpCreatedDate: otpCreatedDate,
-         otpExpiryDate : expiresAt,
-      }
+         otpExpiryDate : expiresAt
+        }
       
-      const result = await otpSchema.create(data);
+      const result = await otpSchema.create(data)
+      console.log(result);
       return result;
       },
    
    accountVerification : async(id,otp)=>{
       try {
       const data = await otpSchema.findOne({where :{ userId : id}})
+      console.log(data);
+      console.log(otp + " and " + data.otpValue)
 
       if(otp != data.otpValue && (data.otpExpiryDate < new Date()))
       { 
-         return false;
+         return false
       }
        else{
-         return true;
+         return true
       }
-     }
-      catch(error){
-         return false;
+   }
+     catch(error){
+      return false
      }
    }
 }
