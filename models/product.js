@@ -27,7 +27,6 @@ module.exports = {
     else{
         return false;
     } 
-<<<<<<< HEAD
    },
     
    showProducts : async () =>{
@@ -51,7 +50,3 @@ module.exports = {
     }
    },
  }
-=======
-   }
-}
->>>>>>> parent of 300f926 (added cart schema)

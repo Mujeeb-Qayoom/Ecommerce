@@ -1,14 +1,9 @@
 const bcrypt = require('bcrypt');
 const userModel = require('../models/user');
 const otpMOdel = require('../models/otp');
-<<<<<<< HEAD
 const productModel = require('../models/product');
 const cartModel = require('../models/cart');
 const mailer = require('../helpers/mailer');
-=======
-const productModel = require('../models/product')
-const mailer = require('../helpers/mailer')
->>>>>>> parent of 300f926 (added cart schema)
 const randomNumber = require('../helpers/randamNo');
 const userSchema = require('../schema/userSchema');
 const otpSchema = require('../schema/otpSchema');
