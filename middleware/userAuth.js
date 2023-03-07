@@ -13,20 +13,22 @@ const userSchema = require('../schema/userSchema');
     },
 
     userAuth : async (req,res,next)=>{
-        console.log("in the authentication middleware");
-        try {
+
+     try {
         const token = req.header('Authorization').replace("Bearer ", "");
         const decode = jwt.verify(token,process.env.SECRET_KEY);
-        const user = await userSchema.findOne({userId : decode.userId});
+        const user = await userSchema.findOne({where: {userId : decode.user_id}});
+
+        console.log("user auth",decode.user_id);
         
         if(!user){
- 
-           return res.status(401).json({message: "please authenticate"})
-          
+           return res.status(401).json({message: "please authenticate"});
         } 
+         req.user = user;
+         req.token = token;
      }    
-        catch(error){  
-         return  res.status(401).json({message: "please authenticate"})
+     catch(error){  
+         return  res.status(401).json({message: "please authenticate"});
         }
           next();
        }

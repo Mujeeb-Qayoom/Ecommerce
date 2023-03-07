@@ -29,10 +29,10 @@ module.exports = {
     } 
    },
     
-   showProducts : async () =>{
-    const products = await productSchema.findAll();
+   products : async (userId) =>{
+    const products = await productSchema.findAll({where:{userId:userId}});
     if(products){
-        return true
+        return products;
       }
         else{
         return false;

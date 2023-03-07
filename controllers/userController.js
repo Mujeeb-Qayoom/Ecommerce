@@ -1,12 +1,9 @@
 const bcrypt = require('bcrypt');
 const userModel = require('../models/user');
 const otpMOdel = require('../models/otp');
-const productModel = require('../models/product');
-const cartModel = require('../models/cart');
 const mailer = require('../helpers/mailer');
 const randomNumber = require('../helpers/randamNo');
 const userSchema = require('../schema/userSchema');
-const otpSchema = require('../schema/otpSchema');
 const response = require('../helpers/responseHandler');
 const auth = require('../middleware/userAuth');
 
@@ -90,21 +87,21 @@ module.exports = {
     console.log(verify)
     if (verify) {
 
-      await userSchema.update({ status: 'verified' }, { where: { userId: data.userId } })
+      await userSchema.update({ status: 'verified' },{ where: { userId: data.userId } })
 
       await userSchema.afterSave();
 
       await mailer.verifyMail(data.email);
-      res.status(201).json({ message: "account verified" })
+      res.status(201).json({ message : "account verified" });
     }
     else {
-      res.status(500).json({ error: "verification failed" })
+      res.status(500).json({ error : "verification failed" });
     }
   },
 
   login : async (req,res) =>{
 
-      // try{
+       try{
          const user = await userModel.userLogin(req);
          if(user){
          const token = await auth.generateToken(user.userId);
@@ -113,58 +110,22 @@ module.exports = {
 
          }
          return response.errorResponse(req,res,400,"invalid credentials");
-        // }
+        }
         
-        // catch(err){
-        //   return response.serverResponse(res,500,"server error");
-        // }
+        catch(err){
+          return response.serverResponse(res,500,"server error");
+        }
   },
 
-addProduct:  async (req, res) => {
-    const data = {
-      userId: req.body.userId,
-      productName: req.body.productName,
-      productDescription: req.body.productDescription,
-      productPrice: req.body.productPrice,
-      productQuantity: req.body.productQuantity,
-      status: req.body.status,
-      catagory: req.body.catagory,
-
-
+  logout : async (req,res) => {
+    
+    try{
+    return response.successResponse(req,res,200, "account logout")
     }
-    try {
-      const result = await productModel.add(data);
-
-      if (result) {
-        return response.successResponse(req, res, 200, "product added")
-        // return res.status(200).json({message : "product added sucessfully"})
-      }
-      return response.errorResponse(req, res, 400, error.message)
-      // return res.status(400).json({error : "unable to add product"})
+      catch(error){
+      return response.serverResponse(res,500,"server erroe");
     }
-
-    catch (err) {
-      return response.serverResponse(res, 500, "server error")
-      //return res.status(500).json({error : "server error"})
-    }
-
   },
 
-  deleteProduct: async (req, res) => {
-
-    try {
-      const result = await productModel.delete(req.body.productId);
-      if (result) {
-        return res.status(201).json({ message: "product deleted sucessfully" })
-      }
-      else {
-        return res.status(404).json({ message: "product not found" })
-      }
-    }
-    catch (error) {
-      return res.status(500).json({ message: "server error" })
-    }
-
-  }
 
 }
