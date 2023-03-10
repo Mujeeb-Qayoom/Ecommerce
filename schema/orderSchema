@@ -1,0 +1,57 @@
+const DataTypes = require('sequelize').DataTypes;
+const { UUIDV4 } = require('sequelize');
+const sequelize = require('../config/db');
+const users = require('../schema/userSchema');
+const cart = require('../schema/cartSchema');
+
+const orderSchema = sequelize.define("order", {
+
+    orderId: {
+        type: DataTypes.UUID,
+        defaultValue : UUIDV4,
+        primaryKey: true,
+      },
+      status :{
+        type : DataTypes.STRING,
+        allowNull : false,
+
+      },
+      totalPrice : {
+        type : DataTypes.FLOAT,
+      },
+      totalQuantity :{
+        type : DataTypes.INTEGER,
+      },
+      items : {
+        type : DataTypes.ARRAY
+      },
+      shippingAddress :{
+        type : DataTypes.STRING,
+        allowNull :false
+      },
+      billingAddress :{
+        type :DataTypes.STRING,
+        allowNull : false
+      },
+      paymentMethod : {
+        type : DataTypes.STRING,
+        allowNull : false
+      },
+     transactionId : {
+      type : DataTypes.UUID,
+      defaultValue : UUIDV4,
+      unique : true,
+      }
+
+    })
+
+    orderSchema.belongsTo(cart,{foreignKey : "cartId"});
+    orderSchema.belongsTo(users,{ foreignKey : "userId"});
+
+    sequelize.sync().then(()=>{
+         console.log("product table has been created")
+     }).catch((err)=>{
+         console.log("unable to create product table",err);
+     })
+
+    module.exports = orderSchema;

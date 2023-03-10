@@ -1,5 +1,5 @@
 const productSchema= require('../schema/productSehema');
-
+const {Op} = require('sequelize');
 
 module.exports = {
 
@@ -49,4 +49,23 @@ module.exports = {
         return false
     }
    },
+
+   search : async (key) =>{
+ 
+        const data = await productSchema.findAll({
+           where : {
+             [Op.and] : [   
+                {catagory : key},
+                { productPrice : { [Op.lt] : 100000}}
+            ]
+           }   
+             })    
+
+        if (data.length){
+            return data;
+        }
+        else {
+            return false;
+        }
+   }
  }

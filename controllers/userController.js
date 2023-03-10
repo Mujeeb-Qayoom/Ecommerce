@@ -14,7 +14,6 @@ module.exports = {
   signup: async (req, res) => {
 
     const checkemail = await userSchema.findOne({ where: { email: req.body.email } })
-    console.log(checkemail);
     if (checkemail) {
       return res.status(409).json({ error: "email already exists" })
     }
@@ -58,7 +57,8 @@ module.exports = {
 
   emailverification: async (req, res) => {
 
-    const verify = await userSchema.findOne({ where: { email: req.body.email } })
+  
+    const verify = await userSchema.findOne({ where: { email: req.body.email } });
 
     if (!verify) {
       return res.status(400).json({ error: "email does not match" });
@@ -89,8 +89,6 @@ module.exports = {
 
       await userSchema.update({ status: 'verified' },{ where: { userId: data.userId } })
 
-      await userSchema.afterSave();
-
       await mailer.verifyMail(data.email);
       res.status(201).json({ message : "account verified" });
     }
@@ -103,18 +101,16 @@ module.exports = {
 
        try{
          const user = await userModel.userLogin(req);
-         if(user){
+        if(user){
          const token = await auth.generateToken(user.userId);
-
-          return response.successResponse(req,res,200,token)
-
-         }
+         return response.successResponse(req,res,200,token)
+        }
          return response.errorResponse(req,res,400,"invalid credentials");
-        }
-        
-        catch(err){
+       }
+      catch(err){
+
           return response.serverResponse(res,500,"server error");
-        }
+      }
   },
 
   logout : async (req,res) => {

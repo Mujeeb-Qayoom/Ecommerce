@@ -60,4 +60,21 @@ module.exports = {
       }
     },
 
+    searchProducts : async(req,res) => {
+        //try{
+            const products = await productModel.search(req.body.search)
+
+            if(products){
+                return response.successResponse(req,res,201,products);
+            }
+
+            else {
+                return response.errorResponse(res,res,400,"no match found")
+            }
+        // }
+        // catch(err){
+        //     return response.serverResponse(res,500,"server error")
+        // }
+    }
+
 }

@@ -1,15 +1,25 @@
 require('dotenv').config();
-require('./config/db');
-const UserRouter = require('./routes/user')
-const port = process.env.PORT || 3030
-const express = require('express');
-const app =  express();
+const app = require('./app');
+const http = require('http');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended : true}))
-app.use(UserRouter);
+const normalizePort = (val) => {
+    const port = parseInt(val, 10);
+  
+    if (isNaN(port)) {
+         throw new Error(`Invalid port number: ${val}`);
+        
+    }
+  
+    if (port >= 0) {
+      return port;
+    }
+};
+  
+const port = normalizePort(process.env.PORT || '3030');
+app.set('port', port);
 
-app.listen(port,()=>{
-    console.log("listening to the port ",port)
-});
+const server = http.createServer(app);
 
+server.listen(port,()=>{
+    console.log("listening to the port",port)
+})
