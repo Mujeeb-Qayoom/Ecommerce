@@ -10,13 +10,13 @@ module.exports = {
     if(product){
         return true
     }
-      else{ 
+    else{ 
         return false
     }
   },
 
    delete : async(id)=>{
-    const product =await productSchema.destroy({where :{
+    const product = await productSchema.destroy({where :{
         productId : id
     }})
     console.log(product);
@@ -41,7 +41,7 @@ module.exports = {
 
    updateProducts : async (id,price) => {
     const data = {productPrice : price}
-    const product = await productSchema.update(data, {where :{ productId : id}})
+    const product = await productSchema.update(data, {where :{ productId : id}});
 
     if(product){ 
         return true }
@@ -60,12 +60,20 @@ module.exports = {
             ]
            }   
              })    
-
         if (data.length){
             return data;
         }
         else {
             return false;
         }
+   },
+
+   getPrice : async(Id) =>{
+     
+     const product = await productSchema.findOne({where : {productId : Id}});
+
+     return product.productPrice;
+
+
    }
  }

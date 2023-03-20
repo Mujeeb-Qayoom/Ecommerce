@@ -15,8 +15,7 @@ const sequelize = new Sequelize(
        }
     }
    );
-   
-    try{
+     try{
             sequelize.authenticate();
             console.log('Connection has been established successfully.');
     

@@ -2,7 +2,8 @@ const DataTypes = require('sequelize').DataTypes;
 const { UUIDV4 } = require('sequelize');
 const sequelize = require('../config/db');
 const users = require('../schema/userSchema');
-const productSchema = sequelize.define("product", {
+
+const productSchema = sequelize.define("product",{
 
      productId :{
         type : DataTypes.UUID,
@@ -13,7 +14,7 @@ const productSchema = sequelize.define("product", {
         type : DataTypes.STRING,
         allowNull : false,
      },
-     productDescription :{
+     productDescription : {
         type: DataTypes.STRING,
      },
      productPrice : {
@@ -29,15 +30,14 @@ const productSchema = sequelize.define("product", {
      status :{
         type : DataTypes.BOOLEAN,
         defaultValue :true,},
-
-});
+   });
 
 productSchema.belongsTo(users,{foreignKey : 'userId'});
 
 sequelize.sync().then(()=>{
-   console.log("product table has been created")
+   console.log("product table has been created");
 }).catch((err)=>{
     console.log("unable to create product table",err);
-})
+});
 
 module.exports = productSchema;

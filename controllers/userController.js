@@ -15,11 +15,11 @@ module.exports = {
 
     const checkemail = await userSchema.findOne({ where: { email: req.body.email } })
     if (checkemail) {
-      return res.status(409).json({ error: "email already exists" })
+      return res.status(409).json({ error: "email already exists" });
     }
 
-    if (req.body.password !== req.body.confirmPassword) {
-      return res.status(400).json({ message: "password not matched" })
+  if (req.body.password !== req.body.confirmPassword) {
+      return res.status(400).json({ message: "password not matched" });
     }
     const hashPassword = await bcrypt.hash(req.body.password, 10)
     const user = {
@@ -34,18 +34,15 @@ module.exports = {
       status: "verification pending",
       role: "user",
     };
-
-    try {
+   try {
       const data = await userModel.signup(user);
 
       if (data) {
-
-        res.status(201).json({
+          res.status(201).json({
           "message": "User Created Successfully!!!",
           info: data
         });
       }
-
       else {
         res.status(500).json({ error: "check your details" });
       }
@@ -56,7 +53,6 @@ module.exports = {
   },
 
   emailverification: async (req, res) => {
-
   
     const verify = await userSchema.findOne({ where: { email: req.body.email } });
 
@@ -70,7 +66,7 @@ module.exports = {
       const validityPeriod = 5 * 60 * 1000;
       const expiresAt = new Date(Date.now() + validityPeriod);
       const data = await otpMOdel.emailverification(otp, verify.userId, verify.createdAt, expiresAt);
-      return res.status(200).json({ message: "verification process initiated check out your email", data })
+      return res.status(200).json({ message: "verification process initiated check out your email", data });
     }
     catch (err) {
       return res.status(500).json({ error: err })
@@ -88,7 +84,6 @@ module.exports = {
     if (verify) {
 
       await userSchema.update({ status: 'verified' },{ where: { userId: data.userId } })
-
       await mailer.verifyMail(data.email);
       res.status(201).json({ message : "account verified" });
     }
@@ -103,13 +98,12 @@ module.exports = {
          const user = await userModel.userLogin(req);
         if(user){
          const token = await auth.generateToken(user.userId);
-         return response.successResponse(req,res,200,token)
+         return response.successResponse(req,res,200,token);
         }
          return response.errorResponse(req,res,400,"invalid credentials");
        }
       catch(err){
-
-          return response.serverResponse(res,500,"server error");
+           return response.serverResponse(res,500,"server error");
       }
   },
 
@@ -119,9 +113,7 @@ module.exports = {
     return response.successResponse(req,res,200, "account logout")
     }
       catch(error){
-      return response.serverResponse(res,500,"server erroe");
+      return response.serverResponse(res,500,"server error");
     }
   },
-
-
 }

@@ -9,18 +9,24 @@ module.exports = {
          otpCreatedDate: otpCreatedDate,
          otpExpiryDate : expiresAt
         }
-      
-      const result = await otpSchema.create(data)
-      console.log(result);
-      return result;
-      },
-   
-   accountVerification : async(id,otp)=>{
-      try {
-      const data = await otpSchema.findOne({where :{ userId : id}})
-      console.log(data);
-      console.log(otp + " and " + data.otpValue)
+      const otpEntry = await otpSchema.findOne({where : {userId : userId}});
 
+      if(!otpEntry){
+      const result = await otpSchema.create(data);
+      // console.log(result);
+      return result;
+      }  
+      else{
+        const newOtp = await otpSchema.update({otpValue : otp}, {where :{userId : userId}});
+        //console.log(newOtp);
+        return newOtp;
+      }  
+   },
+   
+   accountVerification : async(id,otp)=>{ 
+      try {
+      const data = await otpSchema.findOne({where :{ userId : id}});
+      //onsole.log(otp + " and " + data.otpValue);
       if(otp != data.otpValue && (data.otpExpiryDate < new Date()))
       { 
          return false
@@ -28,7 +34,7 @@ module.exports = {
        else{
          return true
       }
-   }
+    }
      catch(error){
       return false
      }

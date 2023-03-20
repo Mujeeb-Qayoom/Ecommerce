@@ -1,0 +1,9 @@
+const orderSchema = require('../schema/orderSchema');
+
+module.exports = {
+
+    order : async(id) =>{
+            
+
+    }
+}

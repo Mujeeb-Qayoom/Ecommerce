@@ -1,26 +1,58 @@
 const cartmodel = require('../models/cart');
+const productModel = require('../models/product');
 const response = require('../helpers/responseHandler')
 
 module.exports = {
 
-    addToCart : async(req,res)=>{
+    addToCart : async(req,res) =>{
+        const productPrice = await productModel.getPrice(req.body.productId);
+        totalPrice = productPrice *req.body.quantity;
         const data = {
-            totalPrice: req.body.totalPrice,
+            totalPrice: totalPrice,
             quantity:   req.body.quantity,
             status:     req.body.status,
             discount:   req.body.discount,
             userId:     req.user.userId,
-            productId:  req.body.productId
+            productId:  req.body.productId,
         }
-        const result = await cartmodel.add(data);
-
-        if(result){
+        
+        const product = await cartmodel.check(req.body.productId);
+         if(!product){ 
+            const result = await cartmodel.add(data);
+         
+           if(result){
             return response.successResponse(req,res,200,"Added to cart");
-        }
-
-         else{
+            }
+            else{
             return response.errorResponse(req,res,400,"unable to add");
          }
+        }
+        else{
+            console.log(req.body.productId);
+            const data = await cartmodel.update(totalPrice,req.body.productId,req.user.userId,req.body.quantity);
+        
+
+            if(data){
+                return response.successResponse(req,res,200,"Added to cart");
+            }
+            else{
+            return response.errorResponse(req,res,400,"unable to add");
+            }
+       }
+    
+    },
+
+    deleteFromCart : async(req,res) =>{
+
+        const result = await cartmodel.delete(req.body.productId,req.user.userId);
+
+        if(result){
+            return response.successResponse(req,res,200,"deleted from cart");
+        }
+
+        else{
+            return response.errorResponse(req,res,400,"uanable to delete");
+        }
     },
 
     moveToSaveLater : async(req,res) =>{
@@ -43,6 +75,18 @@ module.exports = {
             return response.successResponse(req,res,200,result);
         }
          else{
+            return response.errorResponse(req,res,400,"something went wrong");
+        }
+    },
+
+    checkout : async(req,res)=>{
+
+        const data = await cartmodel.checkout(req.user.userId);
+
+        if(data) {
+            return response.successResponse(req,res,200,data);
+        }
+        else {
             return response.errorResponse(req,res,400,"something went wrong");
         }
     },

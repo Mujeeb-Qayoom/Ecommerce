@@ -1,8 +1,9 @@
-const DataTypes = require('sequelize').DataTypes;
-const sequelize = require('../config/db');
-const userSchema = sequelize.define("user", {
 
-    userId :{
+module.exports = {
+  async up (queryInterface, DataTypes) {
+    
+     await queryInterface.createTable('users', {
+      userId :{
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
@@ -69,16 +70,12 @@ const userSchema = sequelize.define("user", {
      status: {
       type:DataTypes.STRING,
       allowNull :false
-    },
- })
-
-     sequelize.sync().then(() => {
-        console.log('user table created successfully!');
-     }).catch((error) => {
-        console.error('Unable to create table ', error);
-     });
+    },});
     
-    module.exports = userSchema;
+    },
 
-
-
+  async down (queryInterface, Sequelize) {
+      await queryInterface.dropTable('users');
+    
+  }
+};

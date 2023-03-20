@@ -22,16 +22,12 @@ const otpSchema = sequelize.define("otp", {
    otpExpiryDate :{
     type : DataTypes.DATE
    }
-   
-   
 });
 otpSchema.belongsTo(users,{foreignKey : 'userId'});
-
 
 sequelize.sync().then(() => {
     console.log('otp table created successfully!');
  }).catch((error) => {
     console.error('Unable to create table ', error);
  });
-
 module.exports = otpSchema;

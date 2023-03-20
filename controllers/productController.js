@@ -18,18 +18,17 @@ module.exports = {
         const result = await productModel.add(data);
   
          if (result) {
-          return response.successResponse(req, res, 200, "product added")
+          return response.successResponse(req, res, 200, "product added");
           // return res.status(200).json({message : "product added sucessfully"})
         }
-        return response.errorResponse(req, res, 400, error.message)
+        return response.errorResponse(req, res, 400, error.message);
         // return res.status(400).json({error : "unable to add product"})
       }
   
       catch (err) {
-        return response.serverResponse(res, 500, "server error")
+        return response.serverResponse(res, 500, "server error");
         //return res.status(500).json({error : "server error"})
       }
-  
     },
   
     deleteProduct: async (req, res) => {
@@ -52,24 +51,23 @@ module.exports = {
     myProducts : async (req, res) =>{
       try {
            const result = await productModel.products(req.user.userId);
-           return response.successResponse(req,res,200,result)
+           return response.successResponse(req,res,200,result);
       }
       catch(error){
         return response.serverResponse(res,500,'server error');
-          
       }
     },
 
     searchProducts : async(req,res) => {
         //try{
-            const products = await productModel.search(req.body.search)
+            const products = await productModel.search(req.body.search);
 
             if(products){
                 return response.successResponse(req,res,201,products);
             }
 
             else {
-                return response.errorResponse(res,res,400,"no match found")
+                return response.errorResponse(res,res,400,"no match found");
             }
         // }
         // catch(err){

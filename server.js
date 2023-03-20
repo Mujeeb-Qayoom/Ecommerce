@@ -7,19 +7,16 @@ const normalizePort = (val) => {
   
     if (isNaN(port)) {
          throw new Error(`Invalid port number: ${val}`);
-        
-    }
-  
+        }    
     if (port >= 0) {
       return port;
     }
 };
-  
 const port = normalizePort(process.env.PORT || '3030');
 app.set('port', port);
 
 const server = http.createServer(app);
 
 server.listen(port,()=>{
-    console.log("listening to the port",port)
+    console.log("listening to the port",port);
 })
