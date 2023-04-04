@@ -1,4 +1,4 @@
-const cartSchema = require('../schema/cartSchema')
+const cartSchema = require('../schema/cartSchema');
 
 module.exports = {
 
@@ -17,8 +17,8 @@ module.exports = {
         const result = await cartSchema.destroy({where :{
                 
             productId : productId,
-            userId : userId
-        }})   
+            userId : userId,
+        }});   
         
         if(result){
             return true;
@@ -26,11 +26,10 @@ module.exports = {
         else{
             return false;
         }
-        
     },
 
     saveLater : async (id) => {
-         const data = await cartSchema.update({status:"save for later"}, {where :{productId : id}});v
+         const data = await cartSchema.update({status:"save for later"}, {where :{productId : id}});
          if(data){
             return true;
          }
@@ -48,10 +47,9 @@ module.exports = {
         else {
             return false;
         }
+    },
 
-        },
-
-     check : async(Id) => {
+    check : async(Id) => {
         const data = await cartSchema.findOne({where :{productId :Id}});
         if(data){
             return data;
@@ -59,9 +57,9 @@ module.exports = {
         else {
             return false;
         }
-       },
+    },
      
-       update: async(price,id,userId,quantity) =>{
+    update: async(price,id,userId,quantity) =>{
         const result = await cartSchema.update({totalPrice :price,quantity:quantity},{where:{productId : id,userId:userId}}) 
         if(result){
             return result;
@@ -69,5 +67,25 @@ module.exports = {
         else {
             return false
         }
-       },
-    }
+    },
+
+    cartvalue : async(id) =>{
+        const value = await cartSchema.sum('totalprice',{where :{userId : id}});
+        return value;
+    },
+
+    totalQuantity : async(id) =>{
+        const quantity = await cartSchema.sum('quantity',{where :{userId : id}})
+        return quantity;
+    },
+
+    myProducts: async(id) =>{
+        const products = await cartSchema.findAll({
+            attributes: ['productId'],
+            where : {
+                userId: id
+              }
+            })
+        return products
+    },
+}

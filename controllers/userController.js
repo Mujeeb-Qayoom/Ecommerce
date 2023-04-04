@@ -7,13 +7,11 @@ const userSchema = require('../schema/userSchema');
 const response = require('../helpers/responseHandler');
 const auth = require('../middleware/userAuth');
 
-
-
 module.exports = {
 
   signup: async (req, res) => {
 
-    const checkemail = await userSchema.findOne({ where: { email: req.body.email } })
+    const checkemail = await userSchema.findOne({ where: { email: req.body.email } });
     if (checkemail) {
       return res.status(409).json({ error: "email already exists" });
     }
@@ -62,20 +60,19 @@ module.exports = {
     try {
       const otp = randomNumber.numberGenerator();
       await mailer.emailer(verify.email, otp);
-
       const validityPeriod = 5 * 60 * 1000;
       const expiresAt = new Date(Date.now() + validityPeriod);
       const data = await otpMOdel.emailverification(otp, verify.userId, verify.createdAt, expiresAt);
       return res.status(200).json({ message: "verification process initiated check out your email", data });
     }
     catch (err) {
-      return res.status(500).json({ error: err })
+      return res.status(500).json({ error: err });
     }
   },
 
   accountverification: async (req, res) => {
 
-    const data = await userSchema.findOne({ where: { email: req.body.email } })
+    const data = await userSchema.findOne({ where: { email: req.body.email } });
     if (!data) {
       return res.status(404).json({ error: "email not matched" })
     }
@@ -83,7 +80,7 @@ module.exports = {
     console.log(verify)
     if (verify) {
 
-      await userSchema.update({ status: 'verified' },{ where: { userId: data.userId } })
+      await userSchema.update({ status: 'verified' },{ where: { userId: data.userId }});
       await mailer.verifyMail(data.email);
       res.status(201).json({ message : "account verified" });
     }

@@ -45,7 +45,6 @@ module.exports = {
       catch (error) {
         return res.status(500).json({ message: "server error" });
       }
-  
     },
   
     myProducts : async (req, res) =>{
@@ -61,7 +60,6 @@ module.exports = {
     searchProducts : async(req,res) => {
         //try{
             const products = await productModel.search(req.body.search);
-
             if(products){
                 return response.successResponse(req,res,201,products);
             }
@@ -73,6 +71,8 @@ module.exports = {
         // catch(err){
         //     return response.serverResponse(res,500,"server error")
         // }
-    }
+    },
+
+   
 
 }

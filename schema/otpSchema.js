@@ -6,10 +6,10 @@ const users = require('../schema/userSchema');
 const otpSchema = sequelize.define("otp", {
 
     otpId: {
-        type: DataTypes.UUID,
-        defaultValue : UUIDV4,
-        primaryKey: true,
-      },
+      type: DataTypes.UUID,
+      defaultValue : UUIDV4,
+      primaryKey: true,
+    },
 
    otpValue:{
     type :DataTypes.INTEGER

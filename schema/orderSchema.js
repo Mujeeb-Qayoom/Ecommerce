@@ -1,30 +1,30 @@
 const DataTypes = require('sequelize').DataTypes;
 const { UUIDV4 } = require('sequelize');
 const sequelize = require('../config/db');
-const users = require('../schema/userSchema');
-const cart = require('../schema/cartSchema');
+const users = require('./userSchema');
+const cart = require('./cartSchema');
 
 const orderSchema = sequelize.define("order", {
 
-    orderId: {
+      orderId: {
         type: DataTypes.UUID,
         defaultValue : UUIDV4,
         primaryKey: true,
       },
-      
-      status :{
+      status: {
         type : DataTypes.STRING,
         allowNull : false,
-
       },
-      totalPrice : {
+      totalAmount : {
         type : DataTypes.FLOAT,
+        allowNull : false
       },
       totalQuantity :{
         type : DataTypes.INTEGER,
+        allowNull : false
       },
-      items : {
-        type : DataTypes.STRING
+      products : {
+        type: DataTypes.JSON,
       },
       shippingAddress :{
         type : DataTypes.STRING,
@@ -38,18 +38,15 @@ const orderSchema = sequelize.define("order", {
         type : DataTypes.STRING,
         allowNull : false
       },
-     transactionId : {
-      type : DataTypes.UUID,
-      defaultValue : UUIDV4,
-      unique : true,
+      dilveryCharges :{
+        type : DataTypes.INTEGER,
+        defaultValue : 0
       },
-      sellerId :{
-        type : DataTypes.STRING
-      },
-
-    })
-
-    orderSchema.belongsTo(cart,{foreignKey : "cartId"});
+      isDelivered :{
+         type : DataTypes.BOOLEAN,
+         defaultValue : false
+      }
+  })
     orderSchema.belongsTo(users,{ foreignKey : "userId"});
 
     sequelize.sync().then(()=>{

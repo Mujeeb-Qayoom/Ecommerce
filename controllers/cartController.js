@@ -1,6 +1,6 @@
 const cartmodel = require('../models/cart');
 const productModel = require('../models/product');
-const response = require('../helpers/responseHandler')
+const response = require('../helpers/responseHandler');
 
 module.exports = {
 
@@ -31,7 +31,6 @@ module.exports = {
             console.log(req.body.productId);
             const data = await cartmodel.update(totalPrice,req.body.productId,req.user.userId,req.body.quantity);
         
-
             if(data){
                 return response.successResponse(req,res,200,"Added to cart");
             }
@@ -51,13 +50,13 @@ module.exports = {
         }
 
         else{
-            return response.errorResponse(req,res,400,"uanable to delete");
+            return response.errorResponse(req,res,400,"unable to delete");
         }
     },
 
     moveToSaveLater : async(req,res) =>{
 
-        const result = await cartmodel.saveLater(req.body.productId)
+        const result = await cartmodel.saveLater(req.body.productId);
 
         if(result){
             return response.successResponse(req,res,200,"moved to save later");
@@ -79,9 +78,9 @@ module.exports = {
         }
     },
 
-    checkout : async(req,res)=>{
+    proceedToBuy : async(req,res)=>{
 
-        const data = await cartmodel.checkout(req.user.userId);
+        const data = await cartmodel.proceedToBuy(req.user.userId,req);
 
         if(data) {
             return response.successResponse(req,res,200,data);

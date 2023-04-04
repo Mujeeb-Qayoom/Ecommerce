@@ -12,7 +12,6 @@ module.exports = {
       if(result.userId){
         return true;
         }
-
       else {
           return false;
        } 

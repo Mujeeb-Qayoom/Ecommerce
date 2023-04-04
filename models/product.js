@@ -3,8 +3,7 @@ const {Op} = require('sequelize');
 
 module.exports = {
 
-    add : async(data) =>{
-
+   add : async(data) =>{
     const product = await productSchema.create(data);
 
     if(product){
@@ -29,7 +28,7 @@ module.exports = {
     } 
    },
     
-   products : async (userId) =>{
+   products : async (userId) => {
     const products = await productSchema.findAll({where:{userId:userId}});
     if(products){
         return products;
@@ -73,7 +72,7 @@ module.exports = {
      const product = await productSchema.findOne({where : {productId : Id}});
 
      return product.productPrice;
+    },
 
-
-   }
+   
  }

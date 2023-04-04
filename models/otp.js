@@ -5,7 +5,7 @@ module.exports = {
    emailverification : async(otp,userId,otpCreatedDate,expiresAt)=>{
       const data ={
          otpValue : otp,
-         userId : userId ,
+         userId : userId,
          otpCreatedDate: otpCreatedDate,
          otpExpiryDate : expiresAt
         }
@@ -13,12 +13,10 @@ module.exports = {
 
       if(!otpEntry){
       const result = await otpSchema.create(data);
-      // console.log(result);
       return result;
       }  
       else{
         const newOtp = await otpSchema.update({otpValue : otp}, {where :{userId : userId}});
-        //console.log(newOtp);
         return newOtp;
       }  
    },
