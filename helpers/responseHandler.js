@@ -3,7 +3,7 @@ module.exports   = {
     res.json({code,data,success: true});
   },
   errorResponse : (req,res,code,error)=>{
-    res.json({code,error,sucess:false});
+    res.status(code).json({code,error,sucess:false});
   },
 
   serverResponse :(res,code,message)=>{

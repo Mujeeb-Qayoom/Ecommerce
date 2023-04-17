@@ -24,7 +24,7 @@ module.exports = {
    accountVerification : async(id,otp)=>{ 
       try {
       const data = await otpSchema.findOne({where :{ userId : id}});
-      //onsole.log(otp + " and " + data.otpValue);
+      console.log(otp + " and " + data.otpValue);
       if(otp != data.otpValue && (data.otpExpiryDate < new Date()))
       { 
          return false

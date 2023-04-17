@@ -9,7 +9,7 @@ const auth = require('../middleware/userAuth');
 
 module.exports = {
 
-  signup: async (req, res) => {
+  signup : async (req, res) => {
 
     const checkemail = await userSchema.findOne({ where: { email: req.body.email } });
     if (checkemail) {
@@ -30,23 +30,20 @@ module.exports = {
       city: req.body.city,
       password: hashPassword,
       status: "verification pending",
-      role: "user",
+      role: req.body.role,
     };
    try {
       const data = await userModel.signup(user);
-
+      console.log(data);
       if (data) {
-          res.status(201).json({
-          "message": "User Created Successfully!!!",
-          info: data
-        });
+        return response.successResponse(req,res,201,"created sucessfully")
       }
       else {
-        res.status(500).json({ error: "check your details" });
+        return response.errorResponse(req,res,400,"check your details and try again")
       }
     }
     catch (err) {
-      res.status(400).json({ error: "check your details" });
+        return response.serverResponse(res,500,"server error");
     }
   },
 
@@ -59,10 +56,11 @@ module.exports = {
     }
     try {
       const otp = randomNumber.numberGenerator();
-      await mailer.emailer(verify.email, otp);
       const validityPeriod = 5 * 60 * 1000;
       const expiresAt = new Date(Date.now() + validityPeriod);
+
       const data = await otpMOdel.emailverification(otp, verify.userId, verify.createdAt, expiresAt);
+      await mailer.emailer(verify.email, otp);
       return res.status(200).json({ message: "verification process initiated check out your email", data });
     }
     catch (err) {
@@ -113,4 +111,24 @@ module.exports = {
       return response.serverResponse(res,500,"server error");
     }
   },
+
+  getAllsellers : async(req,res) =>{
+
+    const result = await userModel.getUsers(req.body.role);
+
+    if(result) {
+      return response.successResponse(req,res,200,result);
+    }
+      return response.errorResponse(req,res,400,"no data found");
+  },
+
+  deleteUser : async(req,res) =>{
+
+    const result = await userModel.deleteUser(req.body.userId);
+     
+    if(result) {
+      return response.successResponse(req,res,200,"user deleted Sucessfully");
+    }
+      return response.errorResponse(req,res,400,"user not found");
+  }
 }

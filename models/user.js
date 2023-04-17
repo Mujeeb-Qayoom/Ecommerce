@@ -8,9 +8,8 @@ module.exports = {
   signup : async(data) =>{
     try{
       const result = await userSchema.create(data);
-      console.log(result.userId);
       if(result.userId){
-        return true;
+        return result;
         }
       else {
           return false;
@@ -35,6 +34,26 @@ module.exports = {
         }
           return user;
   },
+
+  getUsers :async(role) =>{
+    const data = await userSchema.findAll({where :{role : role}});
+
+    if(data) {
+      return data;
+    }
+      return false;
+  },
+
+  deleteUser : async(userId) =>{
+
+    const user = await userSchema.destroy({where :{userId}});
+    
+    if(user) {
+      return true;
+    }
+      return false;
+
+  }
 
 }
 

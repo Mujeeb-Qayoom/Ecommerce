@@ -38,17 +38,15 @@ module.exports = {
     }
    },
 
-   updateProducts : async (id,price) => {
-    const data = {productPrice : price}
-    const product = await productSchema.update(data, {where :{ productId : id}});
+   getProduct : async(req) =>{
 
-    if(product){ 
-        return true }
-    else{ 
-        return false
+    const product = await productSchema.findOne({where :{ productId : req.body.productId, userId : req.user.userId}});
+
+    if(product) {
+        return product;
     }
+        return false;
    },
-
    search : async (key) =>{
  
         const data = await productSchema.findAll({
@@ -74,5 +72,14 @@ module.exports = {
      return product.productPrice;
     },
 
-   
+   getAll : async() =>{
+     
+        const data = await productSchema.findAll();
+        
+        if(data) {
+            return data;
+        }
+             return false;
+
+   }
  }
