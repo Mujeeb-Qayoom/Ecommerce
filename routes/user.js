@@ -5,11 +5,15 @@ const userController = require('../controllers/userController');
 const productController = require('../controllers/productController');
 const cartController = require('../controllers/cartController');
 const ordercontroller = require('../controllers/orderController');
+const paymentController = require('../controllers/paymentController')
 
 // SIGNUP ROUTERS..
 router.post('/signup',userController.signup);
 router.post('/emailverification',userController.emailverification);
 router.post('/accountverification',userController.accountverification);
+router.post('/forgotPassword',userController.emailverification);
+router.post('/resetPassword',userController.resetPassword)
+
 
 // LOGIN ROUTER...
 router.post('/login',userController.login);
@@ -32,6 +36,10 @@ router.post('/user/searchProducts',auth.userAuth,productController.searchProduct
 //ORDER ROUTES..
 router.post('/user/cart/proceedToBuy',auth.userAuth, ordercontroller.proceedToBuy);
 router.delete('/user/cart/deleteOrder',auth.userAuth,ordercontroller.deleteOrder);
+
+//PAYMENT ROUTERS..
+router.post('/user/order/payment',auth.userAuth,paymentController.payment);
+
 
 // ADMIN ROUTERS..
 router.get('/admim/getAllSellers',auth.adminAuth,userController.getAllsellers);

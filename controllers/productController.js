@@ -20,8 +20,8 @@ module.exports = {
          if (result) {
           return response.successResponse(req, res, 200, "product added");
         }
-        return response.errorResponse(req, res, 400, "unable to add product");
-      }
+          return response.errorResponse(req, res, 400, "unable to add product");
+       }
   
       catch (err) {
         return response.serverResponse(res, 500, " unable to connect with server");

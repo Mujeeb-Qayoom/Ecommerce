@@ -61,7 +61,7 @@ module.exports = {
 
       const data = await otpMOdel.emailverification(otp, verify.userId, verify.createdAt, expiresAt);
       await mailer.emailer(verify.email, otp);
-      return res.status(200).json({ message: "verification process initiated check out your email", data });
+      return res.status(200).json({ message: "Process initiated check out your email", data });
     }
     catch (err) {
       return res.status(500).json({ error: err });
@@ -75,7 +75,6 @@ module.exports = {
       return res.status(404).json({ error: "email not matched" })
     }
     const verify = await otpMOdel.accountVerification(data.userId, req.body.otp);
-    console.log(verify)
     if (verify) {
 
       await userSchema.update({ status: 'verified' },{ where: { userId: data.userId }});
@@ -84,6 +83,23 @@ module.exports = {
     }
     else {
       res.status(500).json({ error : "verification failed" });
+    }
+  },
+
+  resetPassword : async(req,res) =>{
+    const data = await userSchema.findOne({where :{ email : req.body.email}});
+    if(!data) {
+      return res.status(404).json({ error: "email not matched" });
+    }
+
+    const verify = await otpMOdel.accountVerification(data.userId, req.body.otp);
+    if (verify) {
+      const hashPassword = await bcrypt.hash(req.body.password, 10)
+      await userSchema.update({password : hashPassword},{ where: { userId: data.userId }});
+      res.status(201).json({ message : "password changed sucessfully" });
+    }
+    else {
+      res.status(500).json({ error : "unable to update password" });
     }
   },
 
