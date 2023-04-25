@@ -16,10 +16,10 @@ module.exports = {
       return res.status(409).json({ error: "email already exists" });
     }
 
-  if (req.body.password !== req.body.confirmPassword) {
+   if (req.body.password !== req.body.confirmPassword) {
       return res.status(400).json({ message: "password not matched" });
     }
-    const hashPassword = await bcrypt.hash(req.body.password, 10)
+    const hashPassword = await bcrypt.hash(req.body.password, 10);
     const user = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -121,7 +121,7 @@ module.exports = {
   logout : async (req,res) => {
     
     try{
-    return response.successResponse(req,res,200, "account logout")
+    return response.successResponse(req,res,200, "account logout");
     }
       catch(error){
       return response.serverResponse(res,500,"server error");
