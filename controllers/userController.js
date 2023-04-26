@@ -36,10 +36,10 @@ module.exports = {
       const data = await userModel.signup(user);
       console.log(data);
       if (data) {
-        return response.successResponse(req,res,201,"created sucessfully")
+        return response.successResponse(req,res,201,"created sucessfully");
       }
       else {
-        return response.errorResponse(req,res,400,"check your details and try again")
+        return response.errorResponse(req,res,400,"check your details and try again");
       }
     }
     catch (err) {
@@ -80,6 +80,7 @@ module.exports = {
       await userSchema.update({ status: 'verified' },{ where: { userId: data.userId }});
       await mailer.verifyMail(data.email);
       res.status(201).json({ message : "account verified" });
+      
     }
     else {
       res.status(500).json({ error : "verification failed" });
